@@ -1,0 +1,111 @@
+= OOPSH : Oopsie!
+
+OOPSH is an attempt to improve many behaviours that the UNIX shell
+environemnt is greatly lacking. With these tools and additions generally 
+having the purpose of making the UNIX shell a little bit less intimidating.
+
+This is split into a few areas.
+
+== Overall Goals
+
+* The system needs to be something that anybody can sit down to OOPSH and 
+  find out how to fvck up their system in a much quicker fashion (what? 
+  you know that is what a lot of people using it will do right away). 
+  Typically this requires a lot of rtfm, and even then, most users never 
+  learn most of the capabilities of their shell and commandline for the 
+  abilities such a system presents.
+* Put revision history implicit into the shell. That way commands like ci/co
+  are not as necessary to make sure they are used.
+* Remove the necessity for $PATH. We will not be removing it, or replacing it.
+  However, anybody who has issues listing the contents of /usr/bin due to 
+  the reading time required for such a task, will note that a better solution 
+  may need to be made.
+* Aliases for common POSIX directories. Such as etc, lib, opt, tmp, var, bin,
+  sbin and proc. Likely these will be accessible by:
+  Configuration/Config, Library, Vendor/Optional,
+  Temporary/Workfiles/Flushable, Program_Files/Variables/Program_Variables,
+  Programs/Executables/Execute/Runnable/Run/Utilies,
+  (Admin/Adminstration/Avatar/Root/Super)_(bin_alias), and
+  Processes/System/Information/Info (respectively)
+* Aliases for common UNIX commands. Such as cat, less/more, ls, cd, rm, 
+  ln, rsync, mv, tar, df, du, and dd. Likely Display/Print,
+  Pager/Page_Through/Split_Up, List/List_Directory/Directory_List,
+  Enter/Change_Directory/CWD/Working_Directory/Into,
+  Delete/Unlink/Remove/Xyzzy/UUDDLRLR, Link/Symbolic,
+  Copy/cp/Duplicate/Syncronise/Backup, Move/Copy_and_Delete/Copy_Delete, 
+  Archive/Tarball/Untar/Extract/Unarchive/Tape, Disk_Space/Space/Storage,
+  Directory_Size/File_Size/Size, and 
+  Direct/Direct_Write/Disk_to_Disk/Literally/Literal (respectively).
+* Shell should learn.
+
+== BASH libraries
+
+Now, BASH shell is a fairly decent tool--as it has been around for quite
+some time, and still stands toe to toe to various other environment systems 
+out there--with the possible except of TCSH, PDKSH, ZSH and PowerShell 
+(depending on who you talk to, really. If BASH was to be no longer a decent 
+tool it would have gone out with COBOL, Visual BASIC, CMD.EXE and--oh right, 
+I was trying to NOT prove myself wrong... right)
+
+These BASH libraries are mostly meant to have the purpose of taking long 
+winded commandline arguments and situations, and make them simple functions
+that can be called from BASH.
+
+Right, now, these are targetting various functions, like firewall
+manipulation, prompt changing, symbolic relinking, and a few other things 
+that probably should not be as hard as they appear to be. Such as going 
+through a file tree and removing all those silly "file~" stuff various 
+editors leave all over.
+
+I do plan to have a future goal to setup a system where the diffs of a 
+file are stored to allow easier backup recovery on the current system.
+
+== RubyOOPSH
+
+RubyShell is an attempt I have been playing with, to really make the 
+shell easier to use.
+
+It mostly runs off of irb's functionality. Simply adding a system to check 
+if an object does not exist, then creating a command object of that kind, 
+and running the command based on that.
+
+Future functionality are:
+* In shell threading. Any processes called for commands will be spawned 
+  from here. However, any shell interactions required for this--as well 
+  as shell "scripts" being created will be threaded as they run.
+* Shell history based on a system other than irb's system
+* SQLite usage to back up any changed files. That is, if a program runs it 
+  in the shell, it will check, regularly, if it has changed when its last 
+  write was, and diff it, then put it into the SQLite usage tracker.
+* Logging system
+* Background running--if needed
+* AI designed to note what programs are run often, and find any patterns 
+  in run order (that is, what CWD it is in, any patterns these are typically 
+  done on, and any commands typically ran before it). If it finds you are 
+  doing something a lot, it may suggest it make a command for it. Though, 
+  limitations will be put into place that something like "list_directory" 
+  does not end up having the AI ask, "hey, I notice you run `list_directory` 
+  fairly often. I have made a temporary command <A53FA467> for that. Would 
+  you like to make use of it?"
+* Expandible to have modules setup for specific commands.
+
+== PythonOOPSH
+
+Not much planned here... it will happen though.
+
+== OOPSH-FS
+
+This is an addition onto OOPSH that is mostly to make navigating through 
+the system easier. OOPSH-FS is a FUSE module that once in the mounted
+"file system", it merely goes through a local database, likely SQLite3, but 
+we may be open to allow mounting to MySQL and PostgreSQL.
+
+The database mostly contains various tagged information about various
+programs. The database is regularly generated and updated based on a set of 
+directories that the file system can be read from. Or possibly via another
+database such a Strigni. Then navigating the directories will mostly work 
+on various tagging setups, where each directory you go deeper into, limits 
+the search for various tagged items. To simply add a tag to a file, move it
+into that tag's directory. Each new tag, generally will start off, point to a 
+nil OOPSH-FS file (if only to keep Strigni from getting too confused on the 
+matter).
